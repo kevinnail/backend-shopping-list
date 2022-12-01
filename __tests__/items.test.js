@@ -82,6 +82,7 @@ describe('items', () => {
 
   it('UPDATE /api/v1/items/:id should update an item', async () => {
     // create a user
+
     const [agent, user] = await registerAndLogin();
     const item = await Item.insert({
       description: 'apples',
@@ -92,12 +93,15 @@ describe('items', () => {
       .put(`/api/v1/items/${item.id}`)
       .send({ bought: true });
     expect(resp.status).toBe(200);
+
     expect(resp.body).toEqual({ ...item, bought: true });
   });
 
   it('UPDATE /api/v1/items/:id should 403 for invalid users', async () => {
     // create a user
+
     const [agent] = await registerAndLogin();
+
     // create a second user
     const user2 = await UserService.create(mockUser2);
     const item = await Item.insert({
@@ -108,6 +112,7 @@ describe('items', () => {
     const resp = await agent
       .put(`/api/v1/items/${item.id}`)
       .send({ bought: true });
+
     expect(resp.status).toBe(403);
   });
 
